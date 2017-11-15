@@ -20,6 +20,9 @@
 #' parameter is important for identifying non-core genes, i.e. accesory genes
 #' when calculating the distances between genenomes.
 #' @param dist Distance method. See [stats::dist].
+#' @details All the inputs should have been produced from the same set of 
+#' original genomes, otherwise it will fail.
+#' @value A \code{data.frame}.
 
 pangStats <- function (
   
