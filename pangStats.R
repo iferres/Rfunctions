@@ -19,7 +19,8 @@
 #' in to be considered as a core-gene (notation comes from Roary). This 
 #' parameter is important for identifying non-core genes, i.e. accesory genes
 #' when calculating the distances between genenomes.
-#' @param dist Distance method. See [stats::dist].
+#' @param dist Distance method. See [ade4::dist.binary]. Default: 1, which
+#' corresponds to Jaccard index.
 #' @details All the inputs should have been produced from the same set of 
 #' original genomes, otherwise it will fail.
 #' @value A \code{data.frame}.
@@ -32,12 +33,12 @@ pangStats <- function (
   ssize=10,
   snum=500,
   accs=.95,
-  dist='euclidean'
+  dist=1
   
 ) {
   
   # Load dependencies, install if any is missing
-  pkgs <- c('seqinr', 'pegas')
+  pkgs <- c('seqinr', 'pegas', 'ade4')
   rq <- sapply(pkgs, require, character.only=TRUE)
   if (!all(rq)){
     print('Installing required packages...')
@@ -120,12 +121,12 @@ pangStats <- function (
   nams <- gsub('>','',system(paste('grep ">"',coreali),intern=T))
   rownames(dna) <- nams
   
-  # Euclidean distance (Accsesory genome)
+  # Jaccard distance (Accsesory genome)
   
   print('Calculating accesory genome distances...')
   acs <- which(rowSums(panmatrix) < round(ncol(panmatrix)*cd))
   pacs <- t(panmatrix[acs, ])
-  dd <- as.matrix(dist(pacs, method = dist))
+  dd <- as.matrix(ade4::dist.binary(pacs, method = dist))
   
   # Gff
   
@@ -166,7 +167,7 @@ pangStats <- function (
     dna2 <- dna[nmat,]
     rcoregene[i] <- nuc.div(dna2)
     
-    # Accesory genome Euclidean distance
+    # Accesory genome Jaccard distance
     
     raccsdist[i] <- mean(vapply(ncol(yy), function(y){
       dd[ yy[1,y] , yy[2,y] ]
