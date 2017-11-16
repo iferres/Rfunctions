@@ -92,7 +92,7 @@ pangStats <- function (
   
   # Panmatrix
   
-  print('[1/3] Processing pan-matrix...')
+  print('[1/5] Processing pan-matrix...')
   
   panmatrix <- read.table(panmat,header=T,sep=',',check.names=F) 
   rnames <- as.vector(panmatrix$Gene) 
@@ -114,7 +114,7 @@ pangStats <- function (
   
   # Core genome
   
-  print('[2/3] Processing core alignment...')
+  print('[2/5] Processing core alignment...')
   
   fas <- read.alignment(coreali,format='fasta')
   dna <- as.DNAbin(fas)
@@ -123,18 +123,18 @@ pangStats <- function (
   
   # Jaccard distance (Accsesory genome)
   
-  print('Calculating accesory genome distances...')
+  print('[3/5] Calculating accesory genome distances...')
   acs <- which(rowSums(panmatrix) < round(ncol(panmatrix)*cd))
   pacs <- t(panmatrix[acs, ])
   dd <- as.matrix(ade4::dist.binary(pacs, method = dist))
   
   # Gff
   
-  print('[3/n] Processing Gubbins gff file...')
+  print('[4/5] Processing Gubbins gff file...')
   
   m <- sharedRec(gubbgff, panmat)
   
-  print('[4/3] Calculating...')
+  print('[5/5] Calculating...')
   
   # Data analysis
   
