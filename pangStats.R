@@ -171,7 +171,7 @@ pangStats <- function (
     
     raccsdist[i] <- mean(vapply(ncol(yy), function(y){
       dd[ yy[1,y] , yy[2,y] ]
-    }))
+    }, FUN.VALUE = 1))
     
     
     # Sharing of recombination blocks
