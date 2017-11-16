@@ -150,7 +150,6 @@ pangStats <- function (
     
     ii <- sample(1:dimy,ssize)
     yy <- pcom[,ii]
-    ff <- list()
     
     # Fluidity
     
