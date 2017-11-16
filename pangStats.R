@@ -140,10 +140,10 @@ pangStats <- function (
   
   seqn      <- seq(1,snum)
   
-  rfluidity <- NULL
-  rcoregene <- NULL
-  raccsdist <- NULL
-  rnumrecom <- NULL
+  rfluidity <- rep(NA, snum)
+  rcoregene <- rep(NA, snum)
+  raccsdist <- rep(NA, snum)
+  rnumrecom <- rep(NA, snum)
   
   pb <- txtProgressBar(min = 0, max = snum, style = 3)
   for (i in seqn) {
