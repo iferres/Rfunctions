@@ -168,14 +168,14 @@ pangStats <- function (
     
     # Accesory genome Jaccard distance
     
-    raccsdist[i] <- mean(vapply(ncol(yy), function(y){
+    raccsdist[i] <- mean(vapply(1:ncol(yy), function(y){
       dd[ yy[1,y] , yy[2,y] ]
     }, FUN.VALUE = 1))
     
     
     # Sharing of recombination blocks
     
-    rnumrecom[i] <- mean(vapply(ncol(yy), function(y){
+    rnumrecom[i] <- mean(vapply(1:ncol(yy), function(y){
       m[ yy[1,y] , yy[2,y] ]
       }, FUN.VALUE = 1L))
     
