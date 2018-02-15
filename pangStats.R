@@ -33,7 +33,8 @@ pangStats <- function (
   ssize=10,
   snum=500,
   accs=.95,
-  dist=1
+  dist=1,
+  cd=.95
   
 ) {
   
