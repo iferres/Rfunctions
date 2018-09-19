@@ -1,20 +1,52 @@
-#Builds a coregenome fasta file using a xmfa (as returned by progressiveMauve) 
-# and ordering the LCBs according to the order in reference.
+#Builds a 'coregenome' using a xmfa (as returned by progressiveMauve) 
+# and ordering the LCBs according to the order in reference. Returns a FASTA
+# file with the 'core' alignment.
 #Selects those LCBs which have sequence from the reference, and assumes these 
 # LCBs are part of the coregenome.
-#If LCBs do not contain any of the genomes (except the reference), this
-# function adds gaps to fill these spaces.
-#Suitable to pass output to gubbins (recombination detection).
+#It is guaranteed that the complete reference genome will appear in the final
+# alignment in the corresponding order, not the others. 
+#If LCBs do not contain some of the genomes (except the reference, which 
+# always should be present), this function adds gaps to fill these spaces.
+#NOTE: progressiveMauve returns LBCs with many gaps in some cases, and also 
+# this function, as mentioned above, adds gaps in cases where the LCB don't 
+# contain all the taxa (nco parameter). Don't freak out if you see many gaps in
+# the final alignment. Understand what this function does in first place. If
+# you want to build a phylogeny, you may find appropiate to trim the alignment 
+# first.
+#Suitable to pass output to gubbins (recombination detection), in theory. If
+# you are considering this, then you shouldn't trim the alignment because you
+# would be creating too many artifitial junctions. This script tries to avoid 
+# this issue by using the order of a reference, but is inevitable that some of
+# the other genomes will be artificialy glued together, specially if the taxa
+# have very plastic and variable genomes. This is an open problem, as long as
+# I know. Another thing to consider is to extract complete LCBs (blocks with 
+# all taxa represented) and run gubbins over separated fasta files, each one 
+# with a different LCB.
 #Tips to choose reference: try to select a closed genome, with few 'n's, and 
 # the largest one. If more than one chromosome available, recomended to subset
 # individual closed chromosomes first, and run progressiveMauve using this
 # subset and the rest of genomes instead of runing all together. After 
 # progressiveMauve, run this script over the xmfa output.
 
-buildCoreGenome <- function(xmfa, #path to xmfa file
-                            dout, #output directory name. Creates if doesnt exists
-                            ref,  #a reference
-                            nco){ #the number of genomes in the alignment
+#NOTE2: I'm thinking that there may be an issue when concatenates the LCBs, 
+# because at it is now, is not considering the orientation of the sequences 
+# (information that is given in the xmfa file). I'm not sure if in the final
+# alignment I'm pasting together blocks in the correct order but incorrect
+# orientation. I put this here as a personal reminder to check this out later. 
+# Any thoughts are welcome.
+
+#Usage: 
+	# xmfa: path to xmfa file
+	# dout: output directory name. Creates it of doesnt exists.
+	# ref: A reference to use as guide. Dont use the complete or relative
+	#  path, just the basename of the reference.
+	#  Example: If reference is at ~/hello/world/reference.fasta, then just
+	#  use 'reference.fasta'.
+	# nco: the number of genomes in the xmfa alignment.
+buildCoreGenome <- function(xmfa,
+                            dout,
+                            ref, 
+			    nco){ 
   
   if (missing(nco)){
 	  stop('You must provide the number of genomes present in the alignment')
