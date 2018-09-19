@@ -142,7 +142,7 @@ buildCoreGenome <- function(xmfa, #path to xmfa file
 
 
 #Taken and adapted from seqinr package.
-#Takes a string vector (result of >writeLines(*aFastaFile*) ) and transforms it
+#Takes a string vector (result of >readLines(*aFastaFile*) ) and transforms it
 # into a sequence list.
 chunk2seq <- function(lines){
   
